@@ -14,7 +14,7 @@ var User   = require('./app/models/user'); // get our mongoose model
 // =================================================================
 // configuration ===================================================
 // =================================================================
-var port = process.env.PORT || 7020; // used to create, sign, and verify tokens
+var port = process.env.PORT || 3000; // used to create, sign, and verify tokens
 
 // connect to database
 mongoose.Promise = global.Promise;
@@ -32,9 +32,20 @@ app.use(bodyParser.json());
 // use morgan to log requests to the console
 app.use(morgan('dev'));
 
+app.all('*', function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE'); // If needed
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,contenttype'); // If needed
+    res.setHeader('Access-Control-Allow-Credentials', true); // If needed
+
+   next();
+});
+
+
 // =================================================================
 // routes ==========================================================
 // =================================================================
+
 app.get('/setup', function(req, res) {
 
 	// create a sample user
