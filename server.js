@@ -14,8 +14,15 @@ var User   = require('./app/models/user'); // get our mongoose model
 // =================================================================
 // configuration ===================================================
 // =================================================================
-var port = process.env.PORT || 8080; // used to create, sign, and verify tokens
-mongoose.connect(config.database); // connect to database
+var port = process.env.PORT || 7020; // used to create, sign, and verify tokens
+
+// connect to database
+mongoose.Promise = global.Promise;
+mongoose.connect(config.database, { useMongoClient: true })
+.then(() =>  console.log('connection successful'))
+.catch((err) => console.error(err));
+
+
 app.set('superSecret', config.secret); // secret variable
 
 // use body parser so we can get info from POST and/or URL parameters
@@ -32,7 +39,7 @@ app.get('/setup', function(req, res) {
 
 	// create a sample user
 	var nick = new User({ 
-		name: 'Nick Cerminara', 
+		name: 'xola139', 
 		password: 'password',
 		admin: true 
 	});
@@ -82,7 +89,7 @@ apiRoutes.post('/authenticate', function(req, res) {
 					admin: user.admin	
 				}
 				var token = jwt.sign(payload, app.get('superSecret'), {
-					expiresIn: 86400 // expires in 24 hours
+					expiresIn: 300 //expires 5 minutes    86400 // expires in 24 hours
 				});
 
 				res.json({
