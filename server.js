@@ -14,7 +14,7 @@ var User   = require('./app/models/user'); // get our mongoose model
 // =================================================================
 // configuration ===================================================
 // =================================================================
-var port = process.env.PORT || 3000; // used to create, sign, and verify tokens
+var port = process.env.PORT || 7020; // used to create, sign, and verify tokens
 
 // connect to database
 mongoose.Promise = global.Promise;
@@ -100,7 +100,7 @@ apiRoutes.post('/authenticate', function(req, res) {
 					admin: user.admin	
 				}
 				var token = jwt.sign(payload, app.get('superSecret'), {
-					expiresIn: 300 //expires 5 minutes    86400 // expires in 24 hours
+					expiresIn: 86400 // expires in 24 hours //300 //expires 5 minutes    86400 // expires in 24 hours
 				});
 
 				res.json({
@@ -166,6 +166,37 @@ apiRoutes.get('/users', function(req, res) {
 apiRoutes.get('/check', function(req, res) {
 	res.json(req.decoded);
 });
+
+apiRoutes.get('/user', function(req, res) {
+	console.log(req.param.name);
+	// find the user
+	User.findOne({
+		name: req.param.name
+	}, function(err, user) {
+		res.json(user);
+	});
+});
+
+
+apiRoutes.post('/user', function(req, res) {
+
+	console.log(req.body);
+	
+	var _id = req.body._id;
+	delete req.body._id;
+
+	console.log(req.body);
+
+	User.findByIdAndUpdate({_id:_id}, req.body, function(err, doc){
+		if (err) console.log(err);
+			console.log("succesfully update status Disponibles ");
+			res.json(doc);
+    });
+
+	
+});
+
+
 
 app.use('/api', apiRoutes);
 

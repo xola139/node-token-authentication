@@ -37,3 +37,6 @@ Send a `GET` request to `http://localhost:8080/api/users` with a header paramete
 You can also send the token as a URL parameter: `http://localhost:8080/api/users?token=YOUR_TOKEN_HERE`
 
 Or you can send the token as a POST parameter of `token`.
+
+
+Send a `GET` request to `http://localhost:8080/api/check?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTMyOTA3OTg5LCJleHAiOjE1MzI5OTQzODl9.NZnVUwPwHWCmxQVPZV7RYpMmmU4Kq5irVcRpDZYO4nk` with a header parameter of `x-access-token` and the token.
