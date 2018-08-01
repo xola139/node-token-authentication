@@ -121,7 +121,7 @@ apiRoutes.post('/authenticate', function(req, res) {
 apiRoutes.use(function(req, res, next) {
 
 	// check header or url parameters or post parameters for token
-	var token = req.body.token || req.param('token') || req.headers['x-access-token'];
+	var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
 	// decode token
 	if (token) {
@@ -133,6 +133,7 @@ apiRoutes.use(function(req, res, next) {
 			} else {
 				// if everything is good, save to request for use in other routes
 				req.decoded = decoded;	
+
 				next();
 			}
 		});
@@ -168,10 +169,9 @@ apiRoutes.get('/check', function(req, res) {
 });
 
 apiRoutes.get('/user', function(req, res) {
-	console.log(req.param.name);
 	// find the user
 	User.findOne({
-		name: req.param.name
+		name: req.query.name
 	}, function(err, user) {
 		res.json(user);
 	});
@@ -179,17 +179,11 @@ apiRoutes.get('/user', function(req, res) {
 
 
 apiRoutes.post('/user', function(req, res) {
-
-	console.log(req.body);
-	
 	var _id = req.body._id;
 	delete req.body._id;
-
-	console.log(req.body);
-
 	User.findByIdAndUpdate({_id:_id}, req.body, function(err, doc){
 		if (err) console.log(err);
-			console.log("succesfully update status Disponibles ");
+			console.log("succesfully update");
 			res.json(doc);
     });
 
